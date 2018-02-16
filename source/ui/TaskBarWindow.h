@@ -21,7 +21,7 @@ class WindowInfo;
 @class TaskClient;
 @class AppleButton;
 
-@interface TaskBarWindow : NSPanel
+@interface TaskBarWindow : NSPanel<NSWindowDelegate>
 {
     AppleButton *_appleButton;
     NSRect rect;

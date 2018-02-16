@@ -63,6 +63,7 @@ public:
     rect.size.height = TB_HEIGHT;
     
     self = [super initWithContentRect:rect styleMask:NSNonactivatingPanelMask backing:NSBackingStoreBuffered defer:NO];
+    [self setDelegate:self];
     
     if(self)
     {
@@ -237,6 +238,16 @@ public:
     {
         [_appleButton performClick:nil];
     }
+}
+
+-(void)windowDidChangeScreen:(NSNotification*)notification
+{
+    rect = [[NSScreen mainScreen] frame];
+    rect.origin.x = 0;
+    rect.origin.y = 0;
+    rect.size.height = TB_HEIGHT;
+    [self setFrame:rect display:YES];
+    [self startAnimation];
 }
 
 -(void)clearWindows
