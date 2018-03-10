@@ -91,7 +91,7 @@ void Window::size(const CGSize &value)
 
 void Window::position(const CGPoint &value)
 {
-    _element.setAttribute(kAXSizeAttribute, Attribute(value));
+    _element.setAttribute(kAXPositionAttribute, Attribute(value));
 }
     
 CGPoint Window::position()
@@ -233,7 +233,7 @@ void Window::focus()
     _element.setAttribute(kAXMinimizedAttribute, Attribute(kCFBooleanFalse));
     
     // Setting kAXMainAttribute=true doesn't work while window
-    // is in the process on deminiaturizing.
+    // is in the process of deminiaturizing.
     // Performing kAXRaiseAction will cause flicker, but works.
     //_element.setAttribute(kAXMainAttribute, Attribute(kCFBooleanTrue));
     _element.performAction(kAXRaiseAction);
@@ -243,7 +243,23 @@ void Window::minimize()
 {
     _element.setAttribute(kAXMinimizedAttribute, Attribute(kCFBooleanTrue));
 }
+
+void Window::maximize()
+{
+    NSRect fullframe = [[NSScreen mainScreen] frame];
+    NSRect visibleFrame = [[NSScreen mainScreen] visibleFrame];
     
+    auto x = fullframe.origin.x;
+    auto y = fullframe.size.height - (visibleFrame.origin.y + visibleFrame.size.height);
+    auto w = fullframe.size.width;
+    auto h = visibleFrame.size.height - 32;
+    
+    this->position(CGPointMake(x, y));
+    this->size(CGSizeMake(w, h));
+    
+    focus();
+}
+
 void Window::toggleFocusMinimize()
 {
     Application* hostApp = app();
@@ -294,6 +310,23 @@ void Window::close()
     [app terminate];
 }
 
+void Window::clipToTaskbar()
+{
+    // make sure the window is not hiding behind the taskbar
+    CGPoint pos = this->position();
+    CGSize sz = this->size();
+    
+    float bottom = pos.y + sz.height;
+    float screenHeight = [[NSScreen mainScreen] frame].size.height;
+    float taskbarHeight = 32;
+    float taskbarTop = screenHeight - taskbarHeight;
+    
+    if(bottom >= taskbarTop) {
+        sz.height -= (bottom - taskbarTop + 1);
+        this->size(sz);
+    }
+}
+    
 void Window::createWindow()
 {
     _hasWindow = true;

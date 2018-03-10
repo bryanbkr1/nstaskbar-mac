@@ -248,6 +248,9 @@ public:
     rect.size.height = TB_HEIGHT;
     [self setFrame:rect display:YES];
     [self startAnimation];
+    
+    for(auto &info : _windows)
+        info->window->clipToTaskbar();
 }
 
 -(void)clearWindows
@@ -290,12 +293,19 @@ public:
     
     info->button.leftClickAction = [=](NSEvent *event)
     {
-        window->toggleFocusMinimize();
+        if((event.modifierFlags & NSEventModifierFlagOption) != 0)
+            window->maximize();
+        else
+            window->toggleFocusMinimize();
     };
     
     info->button.rightClickAction = [=](NSEvent *event)
     {
         NSMenu *menu = [[[NSMenu alloc] initWithTitle:@"AppMenu"] autorelease];
+        
+        auto maximizeAction = [=](){
+            window->maximize();
+        };
         
         auto minimizeAction = [=](){
             window->minimize();
@@ -305,6 +315,8 @@ public:
             window->close();
         };
         
+        [menu addItem:[ActionItem itemWithTitle:@"Maximize" action:maximizeAction]];
+        [menu addItem:[NSMenuItem separatorItem]];
         [menu addItem:[ActionItem itemWithTitle:@"Minimize" action:minimizeAction]];
         [menu addItem:[NSMenuItem separatorItem]];
         [menu addItem:[ActionItem itemWithTitle:@"Close" action:closeAction]];

@@ -334,22 +334,7 @@ void Application::onWindowResized(UIElement element)
     if(it != _windows.end())
     {
         Window* win = it->get();
-        
-        // make sure the window is not hiding behind the taskbar
-        CGPoint pos = win->position();
-        CGSize sz = win->size();
-        
-        float bottom = pos.y + sz.height;
-        float screenHeight = [[NSScreen mainScreen] frame].size.height;
-        float taskbarHeight = 32;
-        float taskbarTop = screenHeight - taskbarHeight;
-        
-        if(bottom >= taskbarTop)
-        {
-            sz.height -= (bottom - taskbarTop + 1);
-            win->size(sz);
-        }
-        
+        win->clipToTaskbar();
         [_workspace windowResized:win];
     }
 }

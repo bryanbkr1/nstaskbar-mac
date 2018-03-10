@@ -44,8 +44,10 @@ public:
     
     void focus();
     void minimize();
+    void maximize();
     void toggleFocusMinimize();
     void close();
+    void clipToTaskbar();
     
     int update();
     State state() const;

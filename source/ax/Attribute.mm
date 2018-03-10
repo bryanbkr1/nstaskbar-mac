@@ -50,7 +50,7 @@ Attribute::Attribute(CGSize size)
 
 Attribute::Attribute(CGPoint point)
 {
-    _type_ref = AXValueCreate(kAXValueTypeCGSize, &point);
+    _type_ref = AXValueCreate(kAXValueTypeCGPoint, &point);
 }
     
 Attribute::~Attribute()
