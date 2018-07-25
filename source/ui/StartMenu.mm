@@ -30,7 +30,15 @@
     for(size_t i = 0, ct = shortcutCount; i < ct; ++i)
     {
         NSString *shortcut = [shortcuts objectAtIndex:i];
-        [self addItem:[StartMenu menuItemForShortcut:shortcut rootMenu:self]];
+        
+        BOOL isDir = NO;
+        BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:shortcut isDirectory:&isDir];
+        BOOL isPackage = [[NSWorkspace sharedWorkspace] isFilePackageAtPath:shortcut];
+        
+        if(isDir && !isPackage)
+            [self addItem:[StartMenu menuItemForPath:shortcut rootMenu:self largeIcon:YES]];
+        else
+            [self addItem:[StartMenu menuItemForShortcut:shortcut rootMenu:self]];
     }
     
     if(shortcutCount > 0)
