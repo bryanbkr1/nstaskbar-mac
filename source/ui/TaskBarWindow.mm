@@ -13,9 +13,9 @@
 #define TB_HEIGHT                   32
 #define START_BTN_WIDTH             64
 #define START_BTN_HEIGHT            32
-#define START_BTN_RIGHT_SPACING     4
+#define START_BTN_RIGHT_SPACING     0
 #define BUTTON_SIZE                 200
-#define BUTTON_SPACING              1
+#define BUTTON_SPACING              0
 #define UPDATE_RATE                 0.1f
 #define BUTTON_EXPAND_SPEED         3.0f
 
@@ -71,6 +71,7 @@ public:
         [self setTitle:title];
         [self setLevel:NSDockWindowLevel + 1];
         [self orderFrontRegardless];
+        [self setBackgroundColor:Utils.backgroundColor];
         
         NSRect rc = NSMakeRect(BUTTON_SPACING, 0, START_BTN_WIDTH, START_BTN_HEIGHT);
         _appleButton = [[[AppleButton alloc] initWithFrame:rc] autorelease];

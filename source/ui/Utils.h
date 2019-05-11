@@ -15,4 +15,10 @@ using namespace std;
 + (NSImage*)iconForHighlightedItem:(NSImage*)icon;
 + (NSImage*)iconWithRotation:(NSImage*)icon angle:(float)angle;
 + (BOOL)isDir:(NSString*)path;
++ (NSColor*)backgroundColor;
++ (NSColor*)backgroundColorHot;
++ (NSColor*)backgroundColorFocused;
++ (NSColor*)textColor;
++ (NSColor*)textColorHot;
++ (NSColor*)textColorFocused;
 @end

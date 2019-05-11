@@ -25,7 +25,7 @@
         [[self hoverButtonCell] setImagePosition:NSImageOnly];
         
         self.leftClickAction = [=](NSEvent *theEvent){
-            [[StartMenu rootMenu:self] popUpMenuPositioningItem:nil atLocation:NSMakePoint(0, 32) inView:nil];
+            [NSMenu popUpContextMenu:[StartMenu rootMenu:self] withEvent:theEvent forView:self];
         };
         
         self.rightClickAction = [=](NSEvent *theEvent){

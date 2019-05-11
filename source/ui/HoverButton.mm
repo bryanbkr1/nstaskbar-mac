@@ -60,43 +60,26 @@
     _hotImage = [image retain];
 }
 
-- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView*)controlView
+- (void)drawBackground:(NSRect)rect
 {
-    ////////////////
-    // background
-    
-    NSRect rect = NSInsetRect(cellFrame, 0.5f, 1.5f);
-    
-    if(_down)
-    {
-        if(_hot)
-            [_pressedGradient drawInRect:rect angle:90];
-        else
-            [_hotGradient drawInRect:rect angle:90];
-    }
-    else if(_hot)
-    {
-        [_hotGradient drawInRect:rect angle:90];
-    }
-    else if(_focused)
-    {
-        [_selectedGradient drawInRect:rect angle:90];
-    }
+    if((_down && _hot) || (_focused && !_down && !_hot))
+        [Utils.backgroundColorFocused setFill];
+    else if(_down || _hot)
+        [Utils.backgroundColorHot setFill];
     else
-    {
-        [[NSColor controlColor] setFill];
-        [NSBezierPath fillRect:rect];
-    }
+        [Utils.backgroundColor setFill];
     
-    ////////////////
-    // border
-    
+    [NSBezierPath fillRect:rect];
+}
+
+- (void)drawBorder:(NSRect)rect
+{
     [[NSColor controlShadowColor] set];
     [NSBezierPath strokeRect:rect];
-    
-    ////////////////
-    // image
-    
+}
+
+- (NSImage*)getCurrentImage
+{
     NSImage *image;
     
     if((_down || _hot || _focused) && _hotImage != nil)
@@ -104,33 +87,50 @@
     else
         image = [self image];
     
+    return image;
+}
+
+- (void)drawImage:(NSRect)rect
+{
+    NSImage *image = [self getCurrentImage];
     NSRect imageRect = NSMakeRect(0.0f, 0.0f, [image size].width, [image size].height);
     
     if([self imagePosition] == NSImageOnly)
     {
-        NSRect rc = NSMakeRect((cellFrame.size.width - 28) / 2, (cellFrame.size.height - 28) / 2, 28, 28);
+        NSRect rc = NSMakeRect((rect.size.width - 28) / 2, (rect.size.height - 28) / 2, 28, 28);
         [image drawInRect:rc fromRect:imageRect operation:NSCompositeSourceOver fraction:1.0f respectFlipped:TRUE hints:nil];
     }
     else
     {
-        NSRect rc = NSMakeRect(2, 2, 28, 28);
+        NSRect rc = NSMakeRect(4, 2, 28, 28);
         [image drawInRect:rc fromRect:imageRect operation:NSCompositeSourceOver fraction:1.0f respectFlipped:TRUE hints:nil];
     }
-    
-    ////////////////
-    // text
-    
-    if(_hot || _down)
-        [textAttributes setValue:[NSColor whiteColor] forKey:NSForegroundColorAttributeName];
+}
+
+- (void)drawText:(NSRect)rect
+{
+    if((_down && _hot) || (_focused && !_down && !_hot))
+        [textAttributes setValue:Utils.textColorFocused forKey:NSForegroundColorAttributeName];
+    else if(_down || _hot)
+        [textAttributes setValue:Utils.textColorHot forKey:NSForegroundColorAttributeName];
     else
-        [textAttributes setValue:[NSColor blackColor] forKey:NSForegroundColorAttributeName];
+        [textAttributes setValue:Utils.textColor forKey:NSForegroundColorAttributeName];
     
-    NSRect textRect = cellFrame;
-    textRect.origin.x += [image size].width + 5;
-    textRect.size.width -= [image size].width + 10;
-    textRect.origin.y = (textRect.size.height - [self font].pointSize) * 0.5f;
+    NSImage *image = [self getCurrentImage];
     
-    [self.title drawInRect:textRect withAttributes:textAttributes];
+    rect.origin.x += [image size].width + 5;
+    rect.size.width -= [image size].width + 10;
+    rect.origin.y = (rect.size.height - [self font].pointSize) * 0.5f;
+    
+    [self.title drawInRect:rect withAttributes:textAttributes];
+}
+
+- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView*)controlView
+{
+    [self drawBackground:cellFrame];
+    [self drawBorder:cellFrame];
+    [self drawImage:cellFrame];
+    [self drawText:cellFrame];
 }
 
 @end

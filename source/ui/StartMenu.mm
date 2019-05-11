@@ -7,6 +7,10 @@
 #include <ui/AppleButton.h>
 #include <ui/Utils.h>
 #include <ui/MenuHelpers.h>
+#include <vector>
+#include <set>
+#include <string>
+#include <cstring>
 
 @implementation StartMenu
 
@@ -154,40 +158,59 @@
     return YES;
 }
 
+- (BOOL)isDirectory:(NSString*)path
+{
+    BOOL isDir;
+    [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir];
+    BOOL isPackage = [[NSWorkspace sharedWorkspace] isFilePackageAtPath:path];
+    return isDir && !isPackage;
+}
+
 - (void)menuNeedsUpdate:(NSMenu*)menu
 {
-    NSString *path = ((StartMenu*)menu)->_path;
+    NSString* rootPath = ((StartMenu*)menu)->_path;
+    std::vector<NSString*> dirs;
+    std::vector<NSString*> files;
     
     [menu removeAllItems];
     
-    NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil];
+    NSArray *entries = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:rootPath error:nil];
     
-    for(size_t i = 0, ct = [files count]; i < ct; ++i)
+    for(size_t i = 0, ct = [entries count]; i < ct; ++i)
     {
-        NSString *filename = [files objectAtIndex:i];
+        NSString *entry = [entries objectAtIndex:i];
         
-        if([filename isEqualToString:@".DS_Store"] || [filename isEqualToString:@".localized"])
-            continue;
+        if([entry isEqualToString:@".DS_Store"] || [entry isEqualToString:@".localized"])
+           continue;
         
-        NSString *pathname = [path stringByAppendingPathComponent:filename];
+        NSString *path = [rootPath stringByAppendingPathComponent:entry];
         
-        BOOL isDir;
-        [[NSFileManager defaultManager] fileExistsAtPath:pathname isDirectory:&isDir];
-        BOOL isPackage = [[NSWorkspace sharedWorkspace] isFilePackageAtPath:pathname];
-        
-        if(isDir && !isPackage)
-        {
-            NSMenuItem *subItem = [StartMenu menuItemForPath:pathname rootMenu:self largeIcon:NO];
-            [subItem setEnabled:YES];
-            [menu addItem:subItem];
-        }
+        if([self isDirectory:path])
+            dirs.push_back(path);
         else
-        {
-            NSMenuItem *subItem = [StartMenu menuItemForFile:pathname rootMenu:self largeIcon:NO];
-            [subItem setEnabled:YES];
-            [menu addItem:subItem];
-        }
+            files.push_back(path);
+    }
+    
+    std::sort(dirs.begin(), dirs.end(), [](NSString* x, NSString* y) {
+        return [x compare:y options:(NSCaseInsensitiveSearch | NSForcedOrderingSearch)] == NSOrderedAscending;
+    });
+    
+    std::sort(files.begin(), files.end(), [](NSString* x, NSString* y) {
+        return [x compare:y options:(NSCaseInsensitiveSearch | NSForcedOrderingSearch)] == NSOrderedAscending;
+    });
+    
+    for(auto dir : dirs)
+    {
+        NSMenuItem *subItem = [StartMenu menuItemForPath:dir  rootMenu:self largeIcon:NO];
+        [subItem setEnabled:YES];
+        [menu addItem:subItem];
+    }
+    
+    for(auto file : files)
+    {
+        NSMenuItem *subItem = [StartMenu menuItemForFile:file rootMenu:self largeIcon:NO];
+        [subItem setEnabled:YES];
+        [menu addItem:subItem];
     }
 }
-
 @end

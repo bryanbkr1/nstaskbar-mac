@@ -69,5 +69,28 @@
     return isDir && ![[NSWorkspace sharedWorkspace] isFilePackageAtPath:path];
 }
 
-@end
++ (NSColor*)backgroundColor {
+    return [NSColor windowBackgroundColor];
+}
 
++ (NSColor*)backgroundColorHot {
+    return [NSColor selectedMenuItemColor] ;
+}
+
++ (NSColor*)backgroundColorFocused {
+    return [NSColor selectedControlColor];
+}
+
++ (NSColor*)textColor {
+    return [NSColor windowFrameTextColor];
+}
+
++ (NSColor*)textColorHot {
+    return [NSColor selectedMenuItemTextColor];
+}
+
++ (NSColor*)textColorFocused {
+    return [NSColor selectedControlTextColor];
+}
+
+@end
