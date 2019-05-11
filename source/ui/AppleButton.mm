@@ -25,7 +25,7 @@
         [[self hoverButtonCell] setImagePosition:NSImageOnly];
         
         self.leftClickAction = [=](NSEvent *theEvent){
-            [NSMenu popUpContextMenu:[StartMenu rootMenu:self] withEvent:theEvent forView:self];
+            [[StartMenu rootMenu:self] popUpMenuPositioningItem:nil atLocation:NSMakePoint(0, 32) inView:self];
         };
         
         self.rightClickAction = [=](NSEvent *theEvent){
@@ -45,9 +45,10 @@
             {
                 [menu insertItemWithTitle:@"Could not determine memory usage." action:nil keyEquivalent:@"" atIndex:0];
             }
-        
-            [menu insertItemWithTitle:@"Edit Shortcuts" action:@selector(onClickEditShortcuts:) keyEquivalent:@"" atIndex:1];
-            [menu insertItemWithTitle:@"Quit Taskbar" action:@selector(onClickedQuit:) keyEquivalent:@"" atIndex:2];
+
+            [menu insertItemWithTitle:@"Toggle Fast Dock" action:@selector(onClickToggleFastDock:) keyEquivalent:@"" atIndex:1];
+            [menu insertItemWithTitle:@"Edit Shortcuts" action:@selector(onClickEditShortcuts:) keyEquivalent:@"" atIndex:2];
+            [menu insertItemWithTitle:@"Quit Taskbar" action:@selector(onClickedQuit:) keyEquivalent:@"" atIndex:3];
             [menu addItem:[ForceMenuPos forcePosItem:[NSEvent mouseLocation] level:NSDockWindowLevel + 1]];
         
             [NSMenu popUpContextMenu:menu withEvent:theEvent forView:self];
@@ -60,6 +61,10 @@
 -(void)dealloc
 {
     [super dealloc];
+}
+
+- (void)onClickToggleFastDock:(NSEvent*)theEvent {
+    [Utils enableFastDock: !Utils.isFastDockEnabled];
 }
 
 - (void)onClickEditShortcuts:(NSEvent*)theEvent

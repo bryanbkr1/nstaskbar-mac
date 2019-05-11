@@ -13,6 +13,7 @@ using namespace std;
 
 @interface AppleButton : HoverButton
 - (id)initWithFrame:(NSRect)frame;
+- (void)onClickToggleFastDock:(NSEvent*)theEvent;
 - (void)onClickedQuit:(NSEvent*)theEvent;
 - (void)onClickEditShortcuts:(NSEvent*)theEvent;
 @end

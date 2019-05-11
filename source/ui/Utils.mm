@@ -69,6 +69,39 @@
     return isDir && ![[NSWorkspace sharedWorkspace] isFilePackageAtPath:path];
 }
 
++ (BOOL)isFastDockEnabled
+{
+    NSDictionary *domain = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"com.apple.dock"];
+    NSNumber* autohideDelay = [domain objectForKey:@"autohide-delay"];
+    NSNumber* autohideTimeModifier = [domain objectForKey:@"autohide-time-modifier"];
+    
+    return autohideDelay != nil && autohideDelay.intValue == 0 && autohideTimeModifier != nil && autohideTimeModifier.intValue == 0;
+}
+
++ (void)enableFastDock:(BOOL)enable
+{
+    NSDictionary *domain = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"com.apple.dock"];
+    
+    if(enable)
+    {
+        NSMutableDictionary* dict = domain.mutableCopy;
+        [dict setObject:[NSNumber numberWithInt:0] forKey:@"autohide-delay"];
+        [dict setObject:[NSNumber numberWithInt:0] forKey:@"autohide-time-modifier"];
+        [[NSUserDefaults standardUserDefaults] setPersistentDomain:dict forName:@"com.apple.dock"];
+    }
+    else
+    {
+        NSMutableDictionary* dict = domain.mutableCopy;
+        [dict removeObjectForKey:@"autohide-delay"];
+        [dict removeObjectForKey:@"autohide-time-modifier"];
+        [[NSUserDefaults standardUserDefaults] setPersistentDomain:dict forName:@"com.apple.dock"];
+    }
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    auto dock = [[NSRunningApplication runningApplicationsWithBundleIdentifier:@"com.apple.dock"] objectAtIndex:0];
+    [dock terminate];
+}
+
 + (NSColor*)backgroundColor {
     return [NSColor windowBackgroundColor];
 }

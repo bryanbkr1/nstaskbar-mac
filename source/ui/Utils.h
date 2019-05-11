@@ -21,4 +21,6 @@ using namespace std;
 + (NSColor*)textColor;
 + (NSColor*)textColorHot;
 + (NSColor*)textColorFocused;
++ (BOOL)isFastDockEnabled;
++ (void)enableFastDock:(BOOL)enable;
 @end
