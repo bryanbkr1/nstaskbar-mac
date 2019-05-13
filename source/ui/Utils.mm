@@ -114,6 +114,10 @@
     return [NSColor selectedControlColor];
 }
 
++ (NSColor*)backgroundBorderColor {
+    return [NSColor disabledControlTextColor];
+}
+
 + (NSColor*)textColor {
     return [NSColor windowFrameTextColor];
 }

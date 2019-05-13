@@ -74,7 +74,8 @@
 
 - (void)drawBorder:(NSRect)rect
 {
-    [[NSColor controlShadowColor] set];
+    [Utils.backgroundBorderColor set];
+    rect = NSInsetRect(rect, 0.0f, 0.5f);
     [NSBezierPath strokeRect:rect];
 }
 

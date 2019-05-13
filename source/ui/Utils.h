@@ -18,6 +18,7 @@ using namespace std;
 + (NSColor*)backgroundColor;
 + (NSColor*)backgroundColorHot;
 + (NSColor*)backgroundColorFocused;
++ (NSColor*)backgroundBorderColor;
 + (NSColor*)textColor;
 + (NSColor*)textColorHot;
 + (NSColor*)textColorFocused;
