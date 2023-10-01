@@ -36,7 +36,6 @@ using namespace std;
 -(void)focusMainWindow:(ax::Application*)app;
 -(void)focusWindow:(ax::Window*)win focused:(bool)focused;
 +(void)assertAccessibilityEnabled;
-
 -(void)applicationCreated:(ax::Application*)app;
 -(void)applicationDestroyed:(ax::Application*)app;
 -(void)windowCreated:(ax::Window*)window;
@@ -45,4 +44,5 @@ using namespace std;
 -(void)windowResized:(ax::Window*)window;
 -(void)windowMoved:(ax::Window*)window;
 -(void)windowFocusChanged:(ax::Window*)window focused:(bool)focused;
+
 @end

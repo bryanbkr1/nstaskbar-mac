@@ -252,7 +252,7 @@ void Window::maximize()
     auto x = fullframe.origin.x;
     auto y = fullframe.size.height - (visibleFrame.origin.y + visibleFrame.size.height);
     auto w = fullframe.size.width;
-    auto h = visibleFrame.size.height - 32;
+    auto h = visibleFrame.size.height - 30;
     
     this->position(CGPointMake(x, y));
     this->size(CGSizeMake(w, h));
@@ -318,7 +318,7 @@ void Window::clipToTaskbar()
     
     float bottom = pos.y + sz.height;
     float screenHeight = [[NSScreen mainScreen] frame].size.height;
-    float taskbarHeight = 32;
+    float taskbarHeight = 27;
     float taskbarTop = screenHeight - taskbarHeight;
     
     if(bottom >= taskbarTop) {

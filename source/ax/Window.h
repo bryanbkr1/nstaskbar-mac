@@ -49,6 +49,7 @@ public:
     void close();
     void clipToTaskbar();
     
+    
     int update();
     State state() const;
     void setDirty();
@@ -62,6 +63,7 @@ private:
     void destroyWindow();
     
     Application *_app;
+    
     UIElement _element;
     Observer _observer;
     string _title;

@@ -7,6 +7,7 @@
 #include <ax/Window.h>
 #include <iostream>
 #include <functional>
+#import <Cocoa/Cocoa.h>
 
 using namespace std;
 using namespace ax;
@@ -60,6 +61,7 @@ using namespace ax;
     NSNotificationCenter *nc = [[NSWorkspace sharedWorkspace] notificationCenter];
     [nc removeObserver:self name:NSWorkspaceDidLaunchApplicationNotification object:nil];
     [nc removeObserver:self name:NSWorkspaceDidTerminateApplicationNotification object:nil];
+    
     
     _applications = vector<shared_ptr<Application>>();
     
@@ -119,6 +121,16 @@ using namespace ax;
     
     if(errors)
         [self setNeedsUpdate];
+}
+
+- (void)activeSpaceDidChange:(NSNotification *)notification {
+    // Implementation code
+}
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(activeSpaceDidChange:)
+                                                 name:NSWorkspaceActiveSpaceDidChangeNotification
+                                               object:nil];
 }
 
 -(void)focusMainWindow:(ax::Application*)app

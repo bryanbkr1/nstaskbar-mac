@@ -9,15 +9,19 @@
 #include <Cocoa/Cocoa.h>
 #include <AppKit/AppKit.h>
 #include <algorithm>
+#import <ApplicationServices/ApplicationServices.h>
 
-#define TB_HEIGHT                   32
-#define START_BTN_WIDTH             64
-#define START_BTN_HEIGHT            32
+
+#define TB_HEIGHT                   28
+#define START_BTN_WIDTH             28
+#define START_BTN_HEIGHT            28
 #define START_BTN_RIGHT_SPACING     0
-#define BUTTON_SIZE                 200
+#define BUTTON_SIZE                 180
 #define BUTTON_SPACING              0
 #define UPDATE_RATE                 0.1f
 #define BUTTON_EXPAND_SPEED         3.0f
+
+
 
 CVReturn RenderTaskBarButtons(CVDisplayLinkRef displayLink,
                               const CVTimeStamp *inNow,
@@ -62,8 +66,9 @@ public:
     rect.origin.y = 0;
     rect.size.height = TB_HEIGHT;
     
-    self = [super initWithContentRect:rect styleMask:NSNonactivatingPanelMask backing:NSBackingStoreBuffered defer:NO];
+    self = [super initWithContentRect:rect styleMask:NSWindowStyleMaskNonactivatingPanel backing:NSBackingStoreBuffered defer:NO];
     [self setDelegate:self];
+    
     
     if(self)
     {
@@ -79,15 +84,15 @@ public:
         
         TaskBarWindow *tb = self;
         
-        NSEventMask eventMask = NSLeftMouseDownMask | NSLeftMouseUpMask;
+        NSEventMask eventMask = NSEventMaskLeftMouseDown | NSEventMaskLeftMouseUp;
         
         _mouseEventMonitor = [NSEvent addGlobalMonitorForEventsMatchingMask:eventMask handler:^(NSEvent *event)
         {
-            if(event.type == NSLeftMouseDown)
+            if(event.type == NSEventTypeLeftMouseDown)
             {
                 [tb globalLeftMouseDown];
             }
-            else if(event.type == NSLeftMouseUp)
+            else if(event.type == NSEventTypeLeftMouseUp)
             {
                 [tb globalLeftMouseUp];
             }
@@ -100,6 +105,26 @@ public:
     
     return self;
 }
+
+- (instancetype)initWithContentRect:(NSRect)contentRect
+                           styleMask:(NSWindowStyleMask)style
+                             backing:(NSBackingStoreType)backingStoreType
+                               defer:(BOOL)flag {
+    self = [super initWithContentRect:contentRect
+                            styleMask:style
+                              backing:backingStoreType
+                                defer:flag];
+
+    if (self) {
+        // Set the collection behavior to allow the window to appear on all spaces
+        [self setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];
+
+        // Other window initialization code here
+    }
+
+    return self;
+}
+
 
 - (void)dealloc
 {
@@ -253,6 +278,19 @@ public:
     for(auto &info : _windows)
         info->window->clipToTaskbar();
 }
+- (void)activeSpaceDidChange:(NSNotification *)notification {
+    rect = [[NSScreen mainScreen] frame];
+ rect.origin.x = 0;
+ rect.origin.y = 0;
+ rect.size.height = TB_HEIGHT;
+ [self setFrame:rect display:YES];
+ [self startAnimation];
+ 
+ for(auto &info : _windows)
+     info->window->clipToTaskbar();
+
+}
+
 
 -(void)clearWindows
 {
@@ -375,6 +413,67 @@ public:
             break;
         }
     }
+
 }
+
+
+
+- (void)enumerateOtherWindows {
+    // Get the list of running applications
+    NSArray *runningApps = [NSRunningApplication runningApplicationsWithBundleIdentifier:nil];
+    
+    for (NSRunningApplication *app in runningApps) {
+        // Skip your own application
+        if (app.processIdentifier == NSProcessInfo.processInfo.processIdentifier) {
+            continue;
+        }
+        
+        // Create an AXUIElement for the application
+        AXUIElementRef appElement = AXUIElementCreateApplication(app.processIdentifier);
+        
+        // Enumerate the windows of the application
+        CFArrayRef windows;
+        AXError result = AXUIElementCopyAttributeValue(appElement, kAXWindowsAttribute, (CFTypeRef *)&windows);
+        
+        if (result == kAXErrorSuccess && CFArrayGetCount(windows) > 0) {
+            for (CFIndex i = 0; i < CFArrayGetCount(windows); i++) {
+                // Get information about each window
+                AXUIElementRef windowElement = (AXUIElementRef)CFArrayGetValueAtIndex(windows, i);
+                
+                // Retrieve attributes like title and position
+                CFStringRef title;
+                if (AXUIElementCopyAttributeValue(windowElement, kAXTitleAttribute, (CFTypeRef *)&title) == kAXErrorSuccess) {
+                }
+                
+                // You can retrieve other attributes like position, size, etc., in a similar way
+                
+                // Release the windowElement
+                CFRelease(windowElement);
+            }
+        }
+        
+        // Release the appElement
+        CFRelease(appElement);
+    }
+}
+
+// Add a method to periodically update the taskbar with information about other windows
+- (void)updateOtherWindows {
+    [self enumerateOtherWindows];
+    // Update your taskbar with information about other windows
+}
+
+// You can call this method periodically to update the list of other windows
+- (void)startUpdatingOtherWindows {
+    // Create a timer to periodically update the list of other windows
+    [NSTimer scheduledTimerWithTimeInterval:5
+                                     target:self
+                                   selector:@selector(updateOtherWindows)
+                                   userInfo:nil
+                                    repeats:YES];
+}
+
+
+
 @end
 

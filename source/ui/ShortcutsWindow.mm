@@ -10,7 +10,7 @@
 
 - (id)init
 {
-    int style = NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask;
+    int style = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable;
     NSRect rect = NSMakeRect(0, 0, 400, 300);
     
     self = [super initWithContentRect:rect styleMask:style backing:NSBackingStoreBuffered defer:NO];
@@ -45,21 +45,21 @@
         [_tableView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
         [_scrollView setDocumentView:_tableView];
         
-        float scrollerWidth = [NSScroller scrollerWidthForControlSize:NSRegularControlSize scrollerStyle:NSScrollerStyleLegacy];
+        float scrollerWidth = [NSScroller scrollerWidthForControlSize:NSControlSizeRegular scrollerStyle:NSScrollerStyleLegacy];
         
         // add buttons for adding and removing items
         NSButton *addButton = [[[NSButton alloc] autorelease] initWithFrame:NSMakeRect(rect.size.width - 4 * 21 - 6 - scrollerWidth, 0, 21, 21)];
         [addButton setImage:[NSImage imageNamed:NSImageNameAddTemplate]];
-        [addButton setButtonType:NSMomentaryPushInButton];
-        [addButton setBezelStyle:NSSmallSquareBezelStyle];
+        [addButton setButtonType:NSButtonTypeMomentaryPushIn];
+        [addButton setBezelStyle:NSBezelStyleSmallSquare];
         [addButton setAction:@selector(addShortcut:)];
         [addButton setTarget:self];
         [[self contentView] addSubview:addButton];
         
         NSButton *remButton = [[[NSButton alloc] autorelease] initWithFrame:NSMakeRect(rect.size.width - 3 * 21 - 5 - scrollerWidth, 0, 21, 21)];
         [remButton setImage:[NSImage imageNamed:NSImageNameRemoveTemplate]];
-        [remButton setButtonType:NSMomentaryPushInButton];
-        [remButton setBezelStyle:NSSmallSquareBezelStyle];
+        [remButton setButtonType:NSButtonTypeMomentaryPushIn];
+        [remButton setBezelStyle:NSBezelStyleSmallSquare];
         [remButton setAction:@selector(removeShortcut:)];
         [remButton setTarget:self];
         [[self contentView] addSubview:remButton];
@@ -68,8 +68,8 @@
         NSImage *downImg = [Utils iconWithRotation:[NSImage imageNamed:NSImageNameGoRightTemplate] angle:-90];
         NSButton *downButton = [[[NSButton alloc] autorelease] initWithFrame:NSMakeRect(rect.size.width - 2 * 21 - 1 - scrollerWidth, 0, 21, 21)];
         [downButton setImage:downImg];
-        [downButton setButtonType:NSMomentaryPushInButton];
-        [downButton setBezelStyle:NSSmallSquareBezelStyle];
+        [downButton setButtonType:NSButtonTypeMomentaryPushIn];
+        [downButton setBezelStyle:NSBezelStyleSmallSquare];
         [downButton setAction:@selector(moveItemDown:)];
         [downButton setTarget:self];
         [[self contentView] addSubview:downButton];
@@ -77,8 +77,8 @@
         NSImage *upImg = [Utils iconWithRotation:[NSImage imageNamed:NSImageNameGoRightTemplate] angle:90];
         NSButton *upButton = [[[NSButton alloc] autorelease] initWithFrame:NSMakeRect(rect.size.width - 1 * 21 - 0 - scrollerWidth, 0, 21, 21)];
         [upButton setImage:upImg];
-        [upButton setButtonType:NSMomentaryPushInButton];
-        [upButton setBezelStyle:NSSmallSquareBezelStyle];
+        [upButton setButtonType:NSButtonTypeMomentaryPushIn];
+        [upButton setBezelStyle:NSBezelStyleSmallSquare];
         [upButton setAction:@selector(moveItemUp:)];
         [upButton setTarget:self];
         [[self contentView] addSubview:upButton];
@@ -131,7 +131,7 @@
     [panel setAllowsMultipleSelection:FALSE];
     [panel beginSheetModalForWindow:self completionHandler:^(NSInteger result)
     {
-        if(result == NSFileHandlingPanelOKButton)
+        if(result == NSModalResponseOK)
         {
             NSString *path = [[[panel URLs] objectAtIndex:0] path];
             

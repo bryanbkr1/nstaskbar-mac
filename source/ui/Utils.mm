@@ -4,8 +4,21 @@
  *--------------------------------------------------------------------------------------------*/
 
 #include <ui/Utils.h>
+#include <Cocoa/Cocoa.h>
+
+
 
 @implementation Utils
+
++ (NSGradient*)backgroundBorderGradient {
+    // Create a gradient with your desired colors
+    NSColor *startColor = [NSColor colorWithCalibratedRed:0.2 green:0.2 blue:0.2 alpha:1.0];
+    NSColor *endColor = [NSColor colorWithCalibratedRed:0.4 green:0.4 blue:0.4 alpha:1.0];
+    
+    NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startColor endingColor:endColor];
+    
+    return gradient;
+}
 
 + (NSImage*)iconForPath:(NSString*)path
 {
@@ -35,7 +48,7 @@
     
     [ret lockFocus];
     [[NSColor controlBackgroundColor] set];
-    NSRectFillUsingOperation(bounds, NSCompositeSourceAtop);
+    NSRectFillUsingOperation(bounds, NSCompositingOperationSourceAtop);
     [ret unlockFocus];
     
     return [ret autorelease];
@@ -75,6 +88,7 @@
     NSNumber* autohideDelay = [domain objectForKey:@"autohide-delay"];
     NSNumber* autohideTimeModifier = [domain objectForKey:@"autohide-time-modifier"];
     
+    
     return autohideDelay != nil && autohideDelay.intValue == 0 && autohideTimeModifier != nil && autohideTimeModifier.intValue == 0;
 }
 
@@ -86,6 +100,7 @@
     {
         NSMutableDictionary* dict = domain.mutableCopy;
         [dict setObject:[NSNumber numberWithInt:0] forKey:@"autohide-delay"];
+        [dict setObject:[NSNumber numberWithInt:32] forKey:@"tilesize"];
         [dict setObject:[NSNumber numberWithInt:0] forKey:@"autohide-time-modifier"];
         [[NSUserDefaults standardUserDefaults] setPersistentDomain:dict forName:@"com.apple.dock"];
     }
@@ -93,6 +108,7 @@
     {
         NSMutableDictionary* dict = domain.mutableCopy;
         [dict removeObjectForKey:@"autohide-delay"];
+        [dict removeObjectForKey:@"tilesize"];
         [dict removeObjectForKey:@"autohide-time-modifier"];
         [[NSUserDefaults standardUserDefaults] setPersistentDomain:dict forName:@"com.apple.dock"];
     }
@@ -102,21 +118,72 @@
     [dock terminate];
 }
 
++ (BOOL)isDisableDockEnabled
+{
+    NSDictionary *domain = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"com.apple.dock"];
+    NSNumber* autohideDelay = [domain objectForKey:@"autohide-delay"];
+    NSNumber* autohideTimeModifier = [domain objectForKey:@"autohide-time-modifier"];
+    
+    return autohideDelay != nil && autohideDelay.intValue == 1000 && autohideTimeModifier != nil && autohideTimeModifier.intValue == 0;
+}
+
++ (void)enableDisableDock:(BOOL)enable
+{
+    NSDictionary *domain = [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"com.apple.dock"];
+    
+    if(enable)
+    {
+        NSMutableDictionary* dict = domain.mutableCopy;
+        [dict setObject:[NSNumber numberWithInt:1000] forKey:@"autohide-delay"];
+        [dict setObject:[NSNumber numberWithInt:1] forKey:@"tilesize"];
+        [[NSUserDefaults standardUserDefaults] setPersistentDomain:dict forName:@"com.apple.dock"];
+    }
+    else
+    {
+        NSMutableDictionary* dict = domain.mutableCopy;
+        [dict removeObjectForKey:@"autohide-delay"];
+        [dict removeObjectForKey:@"tilesize"];
+        [[NSUserDefaults standardUserDefaults] setPersistentDomain:dict forName:@"com.apple.dock"];
+    }
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    auto dock = [[NSRunningApplication runningApplicationsWithBundleIdentifier:@"com.apple.dock"] objectAtIndex:0];
+    [dock terminate];
+}
+
+    
+
 + (NSColor*)backgroundColor {
     return [NSColor windowBackgroundColor];
 }
 
 + (NSColor*)backgroundColorHot {
-    return [NSColor selectedMenuItemColor] ;
-}
+    NSColor *originalColor = [NSColor   blackColor]; // Use your base color here
+    CGFloat darkeningFactor = 0.5; // Adjust this factor to make it darker (0.0 to 1.0)
 
+    // Create a darker color by reducing brightness
+    NSColor *darkerColor = [originalColor colorWithAlphaComponent:darkeningFactor];
+
+    return darkerColor;
+}
 + (NSColor*)backgroundColorFocused {
-    return [NSColor selectedControlColor];
-}
+    NSColor *originalColor = [NSColor   blackColor]; // Use your base color here
+    CGFloat darkeningFactor = 0.3; // Adjust this factor to make it darker (0.0 to 1.0)
 
-+ (NSColor*)backgroundBorderColor {
-    return [NSColor disabledControlTextColor];
+    // Create a darker color by reducing brightness
+    NSColor *darkerColor = [originalColor colorWithAlphaComponent:darkeningFactor];
+
+    return darkerColor;
 }
++ (NSColor*)backgroundBorderColor {
+  NSColor *originalColor = [NSColor   disabledControlTextColor]; // Use your base color here
+   CGFloat darkeningFactor = 0.1; // Adjust this factor to make it darker (0.0 to 1.0)
+
+    // Create a darker color by reducing brightness
+    NSColor *darkerColor = [originalColor colorWithAlphaComponent:darkeningFactor];
+    
+    return darkerColor;
+ }
 
 + (NSColor*)textColor {
     return [NSColor windowFrameTextColor];
@@ -129,5 +196,8 @@
 + (NSColor*)textColorFocused {
     return [NSColor selectedControlTextColor];
 }
+
+
+
 
 @end

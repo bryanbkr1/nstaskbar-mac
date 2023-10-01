@@ -46,10 +46,11 @@
                 [menu insertItemWithTitle:@"Could not determine memory usage." action:nil keyEquivalent:@"" atIndex:0];
             }
 
-            [menu insertItemWithTitle:@"Toggle Fast Dock" action:@selector(onClickToggleFastDock:) keyEquivalent:@"" atIndex:1];
-            [menu insertItemWithTitle:@"Edit Shortcuts" action:@selector(onClickEditShortcuts:) keyEquivalent:@"" atIndex:2];
-            [menu insertItemWithTitle:@"Quit Taskbar" action:@selector(onClickedQuit:) keyEquivalent:@"" atIndex:3];
-            [menu addItem:[ForceMenuPos forcePosItem:[NSEvent mouseLocation] level:NSDockWindowLevel + 1]];
+            [menu insertItemWithTitle:@"Fast Dock" action:@selector(onClickToggleFastDock:) keyEquivalent:@"" atIndex:1];
+            [menu insertItemWithTitle:@"Disable Dock" action:@selector(onClickDisableDock:) keyEquivalent:@"" atIndex:2];
+            [menu insertItemWithTitle:@"Edit Shortcuts" action:@selector(onClickEditShortcuts:) keyEquivalent:@"" atIndex:3];
+            [menu insertItemWithTitle:@"Quit NSTaskbar" action:@selector(onClickedQuit:) keyEquivalent:@"" atIndex:4];
+            [menu addItem:[ForceMenuPos forcePosItem:[NSEvent mouseLocation] level:NSStatusWindowLevel + 1]];
         
             [NSMenu popUpContextMenu:menu withEvent:theEvent forView:self];
         };
@@ -65,6 +66,10 @@
 
 - (void)onClickToggleFastDock:(NSEvent*)theEvent {
     [Utils enableFastDock: !Utils.isFastDockEnabled];
+}
+
+- (void)onClickDisableDock:(NSEvent*)theEvent {
+    [Utils enableDisableDock: !Utils.isDisableDockEnabled];
 }
 
 - (void)onClickEditShortcuts:(NSEvent*)theEvent

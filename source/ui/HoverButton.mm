@@ -33,12 +33,11 @@
         
         NSMutableParagraphStyle *textStyle = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
         [textStyle setLineBreakMode:NSLineBreakByClipping];
-        [textStyle setAlignment:NSLeftTextAlignment];
+        [textStyle setAlignment:NSTextAlignmentLeft];
         
         textAttributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                          textStyle, NSParagraphStyleAttributeName,
-                         [NSColor blackColor], NSForegroundColorAttributeName,
-                         nil];
+                         [NSColor blackColor], NSForegroundColorAttributeName, nil];
     }
     
     return self;
@@ -98,13 +97,13 @@
     
     if([self imagePosition] == NSImageOnly)
     {
-        NSRect rc = NSMakeRect((rect.size.width - 28) / 2, (rect.size.height - 28) / 2, 28, 28);
-        [image drawInRect:rc fromRect:imageRect operation:NSCompositeSourceOver fraction:1.0f respectFlipped:TRUE hints:nil];
+        NSRect rc = NSMakeRect((rect.size.width - 18) / 2, (rect.size.height -18) / 2, 18, 18);
+        [image drawInRect:rc fromRect:imageRect operation:NSCompositingOperationSourceOver fraction:1.0f respectFlipped:TRUE hints:nil];
     }
     else
     {
-        NSRect rc = NSMakeRect(4, 2, 28, 28);
-        [image drawInRect:rc fromRect:imageRect operation:NSCompositeSourceOver fraction:1.0f respectFlipped:TRUE hints:nil];
+        NSRect rc = NSMakeRect(7, 6, 18, 18);
+        [image drawInRect:rc fromRect:imageRect operation:NSCompositingOperationSourceOver fraction:1.0f respectFlipped:TRUE hints:nil];
     }
 }
 
@@ -119,8 +118,8 @@
     
     NSImage *image = [self getCurrentImage];
     
-    rect.origin.x += [image size].width + 5;
-    rect.size.width -= [image size].width + 10;
+    rect.origin.x += [image size].width - 3;
+    rect.size.width -= [image size].width + 8;
     rect.origin.y = (rect.size.height - [self font].pointSize) * 0.5f;
     
     [self.title drawInRect:rect withAttributes:textAttributes];
@@ -156,12 +155,11 @@
         focusTrackingArea = nil;
         
         buttonCell = [[[HoverButtonCell alloc] initTextCell:title] autorelease];
-        [buttonCell setGradientType:NSGradientConvexWeak];
-        [buttonCell setButtonType:NSMomentaryLightButton];
+        [buttonCell setButtonType:NSButtonTypeMomentaryLight];
         [buttonCell setBordered:YES];
-        [buttonCell setBezelStyle:NSSmallSquareBezelStyle];
-        [buttonCell setAlignment:NSLeftTextAlignment];
-        [buttonCell setFont:[NSFont systemFontOfSize:12]];
+        [buttonCell setBezelStyle:NSBezelStyleSmallSquare];
+        [buttonCell setAlignment:NSTextAlignmentLeft];
+        [buttonCell setFont:[NSFont systemFontOfSize:13]];
         [buttonCell setImagePosition:NSImageLeft];
         [buttonCell setImageScaling:NSImageScaleProportionallyUpOrDown];
         

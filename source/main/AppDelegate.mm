@@ -6,6 +6,13 @@
 #import "AppDelegate.h"
 #include <ui/TaskBarWindow.h>
 #import <Cocoa/Cocoa.h>
+#include <ui/Utils.h>
+
+
+@interface AppDelegate ()
+@property (nonatomic, strong) NSMutableDictionary<NSString *, TaskBarWindow *> *taskbars;
+@property (nonatomic, strong) Workspace *workspace;
+@end
 
 @implementation Workspace
 -(void)applicationCreated:(ax::Application*)app
@@ -21,6 +28,7 @@
     //cout << "window created: " << window->title() << endl;
     [_taskbar addWindow:window];
 }
+
 -(void)windowDestroyed:(ax::Window*)window
 {
     //cout << "window destroyed: " << window->title() << endl;
@@ -58,17 +66,56 @@
 }
 @end
 
+
+
+
 @implementation AppDelegate
+
+
+
+
+
 -(void)applicationDidFinishLaunching:(NSNotification*)aNotification
 {
     [AXWorkspace assertAccessibilityEnabled];
     
-    TaskBarWindow* taskbar = [[[TaskBarWindow alloc] init] autorelease];
-    _workspace = [[Workspace alloc] initWithTaskbar:taskbar];
-}
+    self.taskbars = [NSMutableDictionary dictionary];
 
-- (void)applicationWillTerminate:(NSNotification*)aNotification
-{
-    [_workspace release];
-}
+    // Initialize the workspace
+    TaskBarWindow *initialTaskbar = [[TaskBarWindow alloc] init];
+    self.workspace = [[Workspace alloc] initWithTaskbar:initialTaskbar];
+
+    // Listen for notifications related to space changes
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(activeSpaceDidChange:)
+                                                 name:NSWorkspaceActiveSpaceDidChangeNotification
+                                               object:nil];
+ }
+
+ - (void)applicationWillTerminate:(NSNotification *)aNotification {
+     // Release all taskbars
+     for (TaskBarWindow *taskbar in self.taskbars) {
+         [taskbar release];
+     }
+
+     // Remove the observer for space change notifications
+     [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                     name:NSWorkspaceActiveSpaceDidChangeNotification
+                                                   object:nil];
+ }
+
+ // Handle the active space change in this method
+ - (void)activeSpaceDidChange:(NSNotification *)notification {
+     // Get the new active space identifier
+     NSString *newSpaceIdentifier = [[NSWorkspace sharedWorkspace] activeSpaceIdentifier];
+
+     // Check if a taskbar for the new space already exists, create one if not
+     TaskBarWindow *taskbar = self.taskbars[newSpaceIdentifier];
+     if (!taskbar) {
+         TaskBarWindow *taskbar = [[TaskBarWindow alloc] init];
+         self.taskbars[newSpaceIdentifier] = taskbar;
+     }
+ }
+
+
 @end

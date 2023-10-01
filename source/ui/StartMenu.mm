@@ -11,8 +11,21 @@
 #include <set>
 #include <string>
 #include <cstring>
+#import <Foundation/Foundation.h>
+#import <AppKit/AppKit.h>
 
 @implementation StartMenu
+
+- (void)addAppsFromSystemApplications
+{
+    NSArray *systemApps = [self appsInDirectory:@"/System/Applications"];
+    
+    for (NSString *appPath in systemApps) {
+        NSMenuItem *appItem = [StartMenu menuItemForPath:appPath rootMenu:self largeIcon:NO];
+        [appItem setEnabled:YES];
+        [self addItem:appItem];
+    }
+}
 
 -(id)initAsRootMenu:(AppleButton*)button
 {
@@ -48,15 +61,18 @@
     if(shortcutCount > 0)
         [self addItem:[NSMenuItem separatorItem]];
     
-    [self addItem:[StartMenu menuItemForFile:@"/System/Library/CoreServices/Finder.app" rootMenu:self largeIcon:YES]];
-    [self addItem:[StartMenu menuItemForPath:@"/Applications/" rootMenu:self largeIcon:YES]];
-    [self addItem:[StartMenu menuItemForPath:[downloadsPath objectAtIndex:0] rootMenu:self largeIcon:YES]];
-    [self addItem:[StartMenu menuItemForPath:[documentsPath objectAtIndex:0] rootMenu:self largeIcon:YES]];
     
-    [self addItem:[ForceMenuPos forcePosItem:NSMakePoint(0, 32) level:NSDockWindowLevel - 1]];
+
+    [self addItem:[StartMenu menuItemForFile:@"/System/Library/CoreServices/Finder.app" rootMenu:self largeIcon:NO]];;
+    [self addItem:[StartMenu menuItemForPath:@"/Applications/" rootMenu:self largeIcon:NO]];;
+    [self addItem:[StartMenu menuItemForPath:@"/System/Applications/" rootMenu:self largeIcon:NO]];;
+    [self addItem:[StartMenu menuItemForPath:[downloadsPath objectAtIndex:0] rootMenu:self largeIcon:NO]];
+    [self addItem:[StartMenu menuItemForPath:[documentsPath objectAtIndex:0] rootMenu:self largeIcon:NO]];
+    [self addItem:[ForceMenuPos forcePosItem:NSMakePoint(0, 32) level:NSStatusWindowLevel - 1]];
     
     return self;
 }
+
 
 - (id)initAsSubmenu:(StartMenu*)rootMenu path:(NSString*)path
 {
@@ -101,10 +117,9 @@
     [subMenuItem setTarget:rootMenu];
     [subMenuItem setRepresentedObject:[NSArray arrayWithObjects:subMenuItem, path, nil]];
     [subMenuItem setImage:icon];
-    
-    StartMenu *subMenu = [StartMenu menuAsSubmenu:self path:[path retain]];
+    StartMenu *subMenu = [[[StartMenu alloc] autorelease] initAsSubmenu:rootMenu path:path];
     [subMenuItem setSubmenu:subMenu];
-    
+     
     return subMenuItem;
 }
 
@@ -152,6 +167,7 @@
     NSArray *arg = [sender representedObject];
     [[NSWorkspace sharedWorkspace] openFile:[arg objectAtIndex:1]];
 }
+
 
 - (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)anItem
 {
@@ -213,4 +229,8 @@
         [menu addItem:subItem];
     }
 }
+
+
+
+
 @end

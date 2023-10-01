@@ -5,15 +5,24 @@
 
 #import <Cocoa/Cocoa.h>
 #import "AppDelegate.h"
+#include <Foundation/Foundation.h>
+
+
+
+
 
 int main(int argc, const char * argv[])
 {
+
     @autoreleasepool
     {
-        auto del = [[AppDelegate alloc] init];
-        [[NSApplication sharedApplication] setDelegate:del];
-        [[NSApplication sharedApplication] run];
+        NSApplication *app = [NSApplication sharedApplication];
+        AppDelegate *delegate = [[AppDelegate alloc] init];
+        [app setDelegate:delegate]; // Assign the app delegate
+        return NSApplicationMain(argc, argv);
     }
+
+
     
     return 0;
 }

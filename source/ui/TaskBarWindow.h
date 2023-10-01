@@ -45,6 +45,9 @@ class WindowInfo;
 -(void)removeWindow:(ax::Window*)window;
 -(void)renameWindow:(ax::Window*)window;
 -(void)setWindowFocus:(ax::Window*)window focused:(bool)focused;
+- (void)enumerateOtherWindows;
+- (void)updateOtherWindows;
+- (void)startUpdatingOtherWindows;
 
 -(void)globalLeftMouseDown;
 -(void)globalLeftMouseUp;

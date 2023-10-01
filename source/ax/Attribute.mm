@@ -43,6 +43,7 @@ Attribute::Attribute(CFTypeRef typeRef)
     if(typeRef) CFRetain(typeRef);
 }
 
+
 Attribute::Attribute(CGSize size)
 {
     _type_ref = AXValueCreate(kAXValueTypeCGSize, &size);

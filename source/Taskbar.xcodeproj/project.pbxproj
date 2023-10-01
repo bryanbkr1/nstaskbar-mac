@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,7 +19,6 @@
 		3736E34C1CEFB5C9003CC223 /* UIElement.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3736E3361CEFB5C9003CC223 /* UIElement.mm */; };
 		3736E34D1CEFB5C9003CC223 /* Window.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3736E3381CEFB5C9003CC223 /* Window.mm */; };
 		3736E34E1CEFB5C9003CC223 /* AXWorkspace.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3736E33A1CEFB5C9003CC223 /* AXWorkspace.mm */; };
-		3736E34F1CEFB5C9003CC223 /* AppleButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3736E33D1CEFB5C9003CC223 /* AppleButton.mm */; };
 		3736E3501CEFB5CA003CC223 /* HoverButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3736E33F1CEFB5C9003CC223 /* HoverButton.mm */; };
 		3736E3511CEFB5CA003CC223 /* ShortcutsWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3736E3411CEFB5C9003CC223 /* ShortcutsWindow.mm */; };
 		3736E3521CEFB5CA003CC223 /* StartMenu.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3736E3431CEFB5C9003CC223 /* StartMenu.mm */; };
@@ -32,10 +31,11 @@
 		373BFBF81CF5480B009356CE /* AppleIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 373BFBF71CF5480B009356CE /* AppleIcon.icns */; };
 		37A4B3191E43C42700E08A50 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37A4B3181E43C42700E08A50 /* Images.xcassets */; };
 		37CE8F581E453A5F009E8842 /* MenuHelpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37CE8F571E453A5F009E8842 /* MenuHelpers.mm */; };
+		934258792AC9600300B63D7F /* AppleButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3736E33D1CEFB5C9003CC223 /* AppleButton.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		37002FD71A0AE529000499D9 /* Taskbar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Taskbar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		37002FD71A0AE529000499D9 /* NSTaskbar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NSTaskbar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		370030021A0AE626000499D9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		370030041A0AE62C000499D9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		3708DF091A0C784B00488B10 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -77,6 +77,7 @@
 		37A4B3181E43C42700E08A50 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		37CE8F561E453A5F009E8842 /* MenuHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuHelpers.h; sourceTree = "<group>"; };
 		37CE8F571E453A5F009E8842 /* MenuHelpers.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MenuHelpers.mm; sourceTree = "<group>"; };
+		93980E182ABE54C90058F821 /* Taskbar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Taskbar.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,7 +111,7 @@
 		37002FD81A0AE529000499D9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				37002FD71A0AE529000499D9 /* Taskbar.app */,
+				37002FD71A0AE529000499D9 /* NSTaskbar.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -184,6 +185,7 @@
 		3736E3751CEFB74D003CC223 /* main */ = {
 			isa = PBXGroup;
 			children = (
+				93980E182ABE54C90058F821 /* Taskbar.entitlements */,
 				3736E3761CEFB74D003CC223 /* AppDelegate.h */,
 				3736E3771CEFB74D003CC223 /* AppDelegate.mm */,
 				3736E3791CEFB74D003CC223 /* main.mm */,
@@ -208,7 +210,7 @@
 			);
 			name = Taskbar;
 			productName = Taskbar;
-			productReference = 37002FD71A0AE529000499D9 /* Taskbar.app */;
+			productReference = 37002FD71A0AE529000499D9 /* NSTaskbar.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -217,7 +219,8 @@
 		37002FCF1A0AE528000499D9 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
 				ORGANIZATIONNAME = na;
 				TargetAttributes = {
 					37002FD61A0AE529000499D9 = {
@@ -225,12 +228,11 @@
 					};
 				};
 			};
-			buildConfigurationList = 37002FD21A0AE528000499D9 /* Build configuration list for PBXProject "Taskbar" */;
+			buildConfigurationList = 37002FD21A0AE528000499D9 /* Build configuration list for PBXProject "NSTaskbar" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
@@ -267,12 +269,12 @@
 				3736E34D1CEFB5C9003CC223 /* Window.mm in Sources */,
 				37CE8F581E453A5F009E8842 /* MenuHelpers.mm in Sources */,
 				3736E34A1CEFB5C9003CC223 /* Common.mm in Sources */,
+				934258792AC9600300B63D7F /* AppleButton.mm in Sources */,
 				3736E3511CEFB5CA003CC223 /* ShortcutsWindow.mm in Sources */,
 				3736E3541CEFB5CA003CC223 /* Utils.mm in Sources */,
 				3736E3521CEFB5CA003CC223 /* StartMenu.mm in Sources */,
 				3736E3491CEFB5C9003CC223 /* Attribute.mm in Sources */,
 				3736E3501CEFB5CA003CC223 /* HoverButton.mm in Sources */,
-				3736E34F1CEFB5C9003CC223 /* AppleButton.mm in Sources */,
 				3736E37C1CEFB74D003CC223 /* main.mm in Sources */,
 				3736E3531CEFB5CA003CC223 /* TaskBarWindow.mm in Sources */,
 				3736E37A1CEFB74D003CC223 /* AppDelegate.mm in Sources */,
@@ -289,25 +291,41 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "";
 				CONFIGURATION_BUILD_DIR = "bin/$(PLATFORM_NAME)/$(CONFIGURATION)";
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -327,10 +345,10 @@
 				);
 				INFOPLIST_FILE = main/Info.plist;
 				MACH_O_TYPE = mh_execute;
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = Taskbar;
+				PRODUCT_NAME = NSTaskbar;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -339,24 +357,40 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "";
 				CONFIGURATION_BUILD_DIR = "bin/$(PLATFORM_NAME)/$(CONFIGURATION)";
 				COPY_PHASE_STRIP = YES;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -370,9 +404,9 @@
 				);
 				INFOPLIST_FILE = main/Info.plist;
 				MACH_O_TYPE = mh_execute;
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = Taskbar;
+				PRODUCT_NAME = NSTaskbar;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -382,9 +416,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				ENABLE_APP_SANDBOX = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.showdownsoftware.taskbar;
 			};
 			name = Debug;
@@ -394,9 +437,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				CONFIGURATION_BUILD_DIR = ../bin;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_APP_SANDBOX = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.showdownsoftware.taskbar;
 			};
 			name = Release;
@@ -404,7 +456,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		37002FD21A0AE528000499D9 /* Build configuration list for PBXProject "Taskbar" */ = {
+		37002FD21A0AE528000499D9 /* Build configuration list for PBXProject "NSTaskbar" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				37002FF21A0AE529000499D9 /* Debug */,

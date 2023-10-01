@@ -4,27 +4,9 @@
  *--------------------------------------------------------------------------------------------*/
 
 #import <Cocoa/Cocoa.h>
-#include <memory>
-#include <ax/AXWorkspace.h>
 
-
-@class TaskBarWindow;
-@interface Workspace : AXWorkspace
-{
-    TaskBarWindow* _taskbar;
+void enableMultidesktopSupport() {
+    NSApplication *sharedApp = [NSApplication sharedApplication];
+    [sharedApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+    [sharedApp activateIgnoringOtherApps:YES];
 }
--(id)initWithTaskbar:(TaskBarWindow*)taskbar;
-@end
-
-
-@interface AppDelegate : NSObject<NSApplicationDelegate>
-{
-    Workspace* _workspace;
-
-}
-
-@property (strong, nonatomic) NSWindow *window; // Declare the window property
-
-
-    @end
-
